@@ -1,10 +1,9 @@
-# Weather-Journal App Project
+# Diario de Viajes
 
-## Overview
-This project requires you to create an asynchronous web app that uses Web API and user data to dynamically update the UI. 
+## Resumen
+Esta aplicacion usa la API de openwathermap para obtener el clima al pasar el nombre de la ciudad
 
-## Instructions
-This will require modifying the `server.js` file and the `website/app.js` file. You can see `index.html` for element references, and once you are finished with the project steps, you can use `style.css` to style your application to customized perfection.
+## Backend
+El backend esta parcialmente implementado, es decir, los datos son enviados al lado servidor pero son almacenados solamente en memoria, por lo que aun requiere la integración con una base de datos.
 
-## Extras
-If you are interested in testing your code as you go, you can use `tests.js` as a template for writing and running some basic tests for your code.
+

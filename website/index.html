@@ -11,24 +11,28 @@
 <body>
     <div id="app">
         <div class="holder headline">
-            Weather Journal App
+            Diario de viajes
         </div>
         <div class="holder zip">
             <label for="zip">Ingrese el nombre de la ciudad</label>
             <input type="text" id="zip" placeholder="ingrese el nombre de la ciudad">
         </div>
         <div class="holder feel">
-            <label for="feelings">Como se siente hoy?</label>
+            <label for="feelings">Su entrada al diario</label>
             <textarea class="myInput" id="feelings" placeholder="Ingrese su texto" rows="9" cols="50"></textarea>
-            <button id="generate" type="submit"> Generar </button>
-            <button id="errase" type="submit"> Borrar </button>
+            <button id="generate" type="submit"> Generar entrada en el diario</button>
+            <button id="getData" type="submit"> Obtener todos los registros </button>
+            <button id="errase" type="submit"> Limpiar campo </button>
         </div>
-        <div class="holder entry">
-            <div class="title">Entrada mas reciente</div>
+        <div class="holderEntry">
+            <div class="title">Entrada:</div>
+            <br/>
             <div id="entryHolder">
                 <div id="date"></div>
                 <div id="temp"></div>
                 <div id="content"></div>
+                <div id="entradas"></div>
+
             </div>
         </div>
     </div>

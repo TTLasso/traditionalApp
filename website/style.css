@@ -10,9 +10,8 @@ body {
 #app {
     display: grid;
     width: 120%;
-    grid-auto-rows: minmax(150px, auto);
+    grid-auto-rows: minmax(150px, flex);
     /*grid-template-areas: "imp imp imp imp" "butt butt butt butt";*/
-    height: 100vh;
     background: rgb(136, 146, 203);
     background: linear-gradient(0deg, rgb(136, 146, 203) 0%, rgb(0, 9, 60) 100%);
     color: white;
@@ -20,16 +19,23 @@ body {
     grid-gap: 1em;
     font-size: 20px;
     font-family: 'Oswald', sans-serif;
+    
 }
 
-.holder {}
+.holderEntry {
+    margin-bottom: 10px;
+}
 
 .entry {
     background: rgba(59, 74, 107, .4);
     color: rgb(255, 255, 255, 0.2);
 }
 
-#entryHolder {}
+
+#entryHolder {
+    display:flex;
+    border-radius: 5px;
+}
 
 #date {}
 
@@ -80,6 +86,7 @@ button {
     transition: all 0.2s ease-in-out;
     cursor: pointer;
     border-radius: 5px;
+    margin-bottom: 10px;
 }
 
 h1 {

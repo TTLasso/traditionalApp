@@ -1,12 +1,12 @@
-// Setup empty JS object to act as endpoint for all routes
+// Objeto JS vacio para usar de endpoint para todas las rutas
 projectData = {};
 
-// Require Express to run server and routes
+// requisitos de dependencias de la app
 
 const express = require('express');
 const mysql = require('mysql');
 
-//Coneccion
+//Conexion
 
 const connection = mysql.createConnection({
     host: 'us-cdbr-east-05.cleardb.net',
@@ -16,7 +16,7 @@ const connection = mysql.createConnection({
 })
 
 
-// Start up an instance of app
+// Empezar una instancia de la App
 
 const app = express();
 
@@ -24,57 +24,38 @@ const app = express();
 /* Middleware*/
 
 const bodyParser = require('body-parser');
-//Here we are configuring express to use body-parser as middle-ware.
+
+//Configurar express como body-parser
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
 
-// Cors for cross origin allowance
+// Cors 
 
 const cors = require('cors');
 app.use(cors());
 
-// Initialize the main project folder
+// carpeta principal del proyecto
 app.use(express.static('website'));
 
 
-// Setup Server
+// Establecer coneccion con el servidor
 const port = 8000;
 app.listen(process.env.PORT || port, () => console.log(`Server listening on port ${port}`));
 
-//Motor 
-// app.set('view engine', 'ejs');
 
+// RUTAS
 
-connection.query('SELECT * FROM ingresos WHERE id = "1"', (error, rows) => {
-    if (error) throw error;
-
-    if (!error) {
-        console.log(rows)
-    }
-})
-
-
-// //Renderizar pagina principal
-// app.get('/', function (req, res) {
-//     res.render('index.ejs')
-// })
-
-
-// TODO-ROUTES!
 //GET
-
 const data = [];
 app.get('/all', getData)
 
 function getData(req, res) {
     res.send(data)
-    console.log(`${data}`)
+    console.log(`los datos del get son ${data}`)
 }
 
-
 //POST
-
 app.post('/addTemp', addTemp)
 
 function addTemp(req, res) {
@@ -84,15 +65,27 @@ function addTemp(req, res) {
         weather: req.body.weather
     }
     data.push(newEntrie)
-    res.send(data)
     console.log(data)
 
-    var date = req.body.newDate;
+    var fecha = req.body.newDate;
     var temp = req.body.weather;
     var feeling = req.body.feelings;
-    connection.query(`INSERT INTO ingresos (id, ciudad, sentimiento) VALUES ("6","${feeling}","${temp}")`);
+    var ciudad = req.body.zipCode;
+    connection.query(`INSERT INTO ingresos (fecha, ciudad, temperatura, entrada) VALUES ("${fecha}", "${ciudad}", "${temp}", "${feeling}")`);
+    
 
 }
+
+//obtener todos las entradas de la tabla  y enviarlas al lado cliente
+app.get('/getPosts', (req, res) => {
+    connection.query('SELECT * FROM ingresos', (error, results) => {
+        if (error) throw error;
+        if (!error) {
+            res.send(results);
+            console.log(results);
+        }
+    })
+})
 
 
 

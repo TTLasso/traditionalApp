@@ -46,27 +46,6 @@ app.listen(process.env.PORT || port, () => console.log(`Server listening on port
 // app.set('view engine', 'ejs');
 
 
-// var sql = `INSERT INTO ingresos (id, ciudad, sentimiento) VALUES ('2' , 'manta' , 'asdasdasd' , NOW())`;
-// connection.query(sql, function (error, rows) {
-//     if (error) throw error;
-
-//     if (!error) {
-//         console.log(rows)
-//     }
-// })
-
-// app.post('/registro', function (req, res) {
-//     var date = req.body.newDate;
-//     var temp = req.body.temp;
-//     var feeling = req.body.feelings;
-
-//     connection.query(`INSERT INTO ingresos (id, ciudad, sentimiento) SET ?`, temp, feeling, feeling, function (error, results, fields) {
-//         if (error) throw error;
-//         res.end(JSON.stringify(results));
-//     });
-// });
-
-
 connection.query('SELECT * FROM ingresos WHERE id = "1"', (error, rows) => {
     if (error) throw error;
 

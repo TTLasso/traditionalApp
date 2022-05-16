@@ -24,6 +24,7 @@ body {
 
 .holderEntry {
     margin-bottom: 10px;
+    display: block;
 }
 
 .entry {
@@ -33,7 +34,7 @@ body {
 
 
 #entryHolder {
-    display:flex;
+    display:block;
     border-radius: 5px;
 }
 

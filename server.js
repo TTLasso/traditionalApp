@@ -52,7 +52,7 @@ app.get('/all', getData)
 
 function getData(req, res) {
     res.send(data)
-    console.log(`los datos del get son ${data}`)
+    //console.log(`los datos del get son ${data}`)
 }
 
 //POST
@@ -62,7 +62,8 @@ function addTemp(req, res) {
     newEntrie = {
         newDate: req.body.newDate,
         feelings: req.body.feelings,
-        weather: req.body.weather
+        weather: req.body.weather,
+        zipCode: req.body.zipCode
     }
     data.push(newEntrie)
     console.log(data)
@@ -72,13 +73,13 @@ function addTemp(req, res) {
     var feeling = req.body.feelings;
     var ciudad = req.body.zipCode;
     connection.query(`INSERT INTO ingresos (fecha, ciudad, temperatura, entrada) VALUES ("${fecha}", "${ciudad}", "${temp}", "${feeling}")`);
-    
+
 
 }
 
 //obtener todos las entradas de la tabla  y enviarlas al lado cliente
 app.get('/getPosts', (req, res) => {
-    connection.query('SELECT * FROM ingresos', (error, results) => {
+    connection.query('SELECT * FROM ingresos ORDER BY id DESC', (error, results) => {
         if (error) throw error;
         if (!error) {
             res.send(results);
@@ -87,5 +88,27 @@ app.get('/getPosts', (req, res) => {
     })
 })
 
+app.get('/deletePosts/:id', (req, res) => {
+    const postId = req.params.id;
+    connection.query(`DELETE FROM ingresos WHERE id = ${postId}`, (error, results) => {
+        if (error) throw error;
+        if (!error) {
+            console.log('entrada eliminada')
+        }
+    })
+})
+
+
+// app.get('/detelePost', (req, res) => {
+//     con.connect(function (err) {
+     
+//         if (err) throw err;
+//         var sql = `DELETE FROM ingresos WHERE id = 'Mountain 21'`;
+//         con.query(sql, function (err, result) {
+//           if (err) throw err;
+//           console.log("Number of records deleted: " + result.affectedRows);
+//         });
+//     });
+// })
 
 

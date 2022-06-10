@@ -25,7 +25,7 @@ function nuevaEntrada(e) {
             postData('./addTemp', { newDate: newDate, weather: weather, feelings: feelings, zipCode: zipCode })
             updateUI()
         })
-       
+
 }
 
 function obtenerEntradas(e) {
@@ -73,10 +73,10 @@ const updateUI = async () => {
     const req = await fetch('/all')
     try {
         const allData = await req.json()
-        document.getElementById('date').innerHTML = `La nueva entrada del: ${allData[allData.length-1].newDate} en ${allData[allData.length-1].zipCode},`;
-        document.getElementById('temp').innerHTML = `con una temperatura de:  ${allData[allData.length-1].weather}°C,`;
-        document.getElementById('content').innerHTML = `en donde has dicho: ${allData[allData.length-1].feelings} </br></br>`;
-        
+        document.getElementById('date').innerHTML = `La nueva entrada del: ${allData[allData.length - 1].newDate} en ${allData[allData.length - 1].zipCode},`;
+        document.getElementById('temp').innerHTML = `con una temperatura de:  ${allData[allData.length - 1].weather}°C,`;
+        document.getElementById('content').innerHTML = `en donde has dicho: ${allData[allData.length - 1].feelings} </br></br>`;
+
     } catch (error) {
         console.log('error', error)
     }
@@ -101,23 +101,36 @@ const getPosts = async () => {
     try {
         const allData = await req.json();
         allData.forEach(element => {
+            let elemento = document.createElement("div");
             let entrada = document.createElement("div");
             let borrarEntrada = document.createElement("button");
             borrarEntrada.innerText = `Eliminar entrada`;
             //console.log(element);
-            document.getElementById('entradas').appendChild(entrada);
-            document.getElementById('entradas').appendChild(borrarEntrada);
+            elemento.appendChild(entrada);
+            elemento.appendChild(borrarEntrada);
+            document.getElementById('entradas').appendChild(elemento);
             entrada.innerHTML = `${element.fecha}, ${element.ciudad}, ${element.temperatura}&deg;, ${element.entrada}`;
             let id = element.id;
+            elemento.setAttribute("id", `padre${id}`)
             borrarEntrada.setAttribute("id", id);
             const borrar = async (url) => {
                 await fetch(`/deletePosts/${id}`);
-                }
-            function reload() {
-                window.location.reload();
             }
-            document.getElementById(`${id}`).addEventListener('click', borrar) 
-            document.getElementById(`${id}`).addEventListener('click', reload) 
+            function reload() {
+                document.getElementById(`padre${id}`).setAttribute("style", "display: none")
+            }
+           
+            document.getElementById(`${id}`).addEventListener('click',  function confirm() {
+                var resultado = window.confirm('¿Deseas eliminar la entrada?');
+                if (resultado === true) {
+                    borrar();
+                    reload();
+                    window.alert('Entrada borrada');
+                } else {
+                    window.alert('Entrada conservada');
+                }
+            })
+            
         });
     } catch (error) {
         console.log('error', error)

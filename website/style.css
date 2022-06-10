@@ -49,7 +49,7 @@ body {
 .title {}
 
 
-/*  Basic Styling To Override Default For Basic HTML Elements */
+/* Estilizado para sobreponer elementos basicos */
 
 .holder.headline {
     font-size: 3em;
@@ -104,7 +104,7 @@ textarea {
 }
 
 
-/* Reset style for HTML element on active to have no border*/
+/* manejo de formularios*/
 
 input:focus,
 select:focus,
@@ -121,7 +121,7 @@ button:hover {
 }
 
 
-/* Style for Placeholder Text*/
+/* estilo de cuadro de resultados*/
 
 ::placeholder {
     /* Firefox, Chrome, Opera */

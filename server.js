@@ -88,6 +88,7 @@ app.get('/getPosts', (req, res) => {
     })
 })
 
+//Borrar ingreso de la base de datos
 app.get('/deletePosts/:id', (req, res) => {
     const postId = req.params.id;
     connection.query(`DELETE FROM ingresos WHERE id = ${postId}`, (error, results) => {

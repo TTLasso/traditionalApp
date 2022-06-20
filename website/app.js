@@ -14,15 +14,13 @@ document.getElementById('errase').addEventListener('click', clearUI);
 //Obtiene datos ingresados por el usuario, para hacer el llamado a la API
 function nuevaEntrada(e) {
     let zipCode = document.getElementById('zip').value;
-    let d = new Date();
-    let newDate = d.getMonth() + '.' + d.getDate() + '.' + d.getFullYear();
     let feelings = document.getElementById('feelings').value;
     /*api call*/
     addTemp(`${baseURL}${zipCode}${apiKey}`)
         .then(function (data) {
             console.log(`super mega data ${data}`)
             var weather = Math.round(parseFloat(data.main.temp) - 273.15);
-            postData('./addTemp', { newDate: newDate, weather: weather, feelings: feelings, zipCode: zipCode })
+            postData('./addTemp', {weather: weather, feelings: feelings, zipCode: zipCode })
             updateUI()
         })
 
@@ -73,8 +71,7 @@ const updateUI = async () => {
     const req = await fetch('/all')
     try {
         const allData = await req.json()
-        document.getElementById('date').innerHTML = `La nueva entrada del: ${allData[allData.length - 1].newDate} en ${allData[allData.length - 1].zipCode},`;
-        document.getElementById('temp').innerHTML = `con una temperatura de:  ${allData[allData.length - 1].weather}°C,`;
+        document.getElementById('temp').innerHTML = `La nueva entrada en: ${allData[allData.length - 1].zipCode}, con una temperatura de: ${allData[allData.length - 1].weather}°C,`;
         document.getElementById('content').innerHTML = `en donde has dicho: ${allData[allData.length - 1].feelings} </br></br>`;
 
     } catch (error) {
@@ -87,7 +84,6 @@ const updateUI = async () => {
 
 //Borra el campo de ingresos
 function clearUI() {
-    document.getElementById('date').innerHTML = "";
     document.getElementById('temp').innerHTML = "";
     document.getElementById('content').innerHTML = "";
     document.getElementById('entradas').innerHTML = "";
@@ -109,7 +105,7 @@ const getPosts = async () => {
             elemento.appendChild(entrada);
             elemento.appendChild(borrarEntrada);
             document.getElementById('entradas').appendChild(elemento);
-            entrada.innerHTML = `${element.fecha}, ${element.ciudad}, ${element.temperatura}&deg;, ${element.entrada}`;
+            entrada.innerHTML = `${element.ciudad}, ${element.temperatura}&deg;, ${element.entrada}`;
             let id = element.id;
             elemento.setAttribute("id", `padre${id}`)
             borrarEntrada.setAttribute("id", id);

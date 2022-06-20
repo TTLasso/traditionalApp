@@ -60,7 +60,6 @@ app.post('/addTemp', addTemp)
 
 function addTemp(req, res) {
     newEntrie = {
-        newDate: req.body.newDate,
         feelings: req.body.feelings,
         weather: req.body.weather,
         zipCode: req.body.zipCode
@@ -68,11 +67,10 @@ function addTemp(req, res) {
     data.push(newEntrie)
     console.log(data)
 
-    var fecha = req.body.newDate;
     var temp = req.body.weather;
     var feeling = req.body.feelings;
     var ciudad = req.body.zipCode;
-    connection.query(`INSERT INTO ingresos (fecha, ciudad, temperatura, entrada) VALUES ("${fecha}", "${ciudad}", "${temp}", "${feeling}")`);
+    connection.query(`INSERT INTO ingresos (ciudad, temperatura, entrada) VALUES ("${ciudad}", "${temp}", "${feeling}")`);
 
 
 }

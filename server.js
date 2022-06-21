@@ -3,16 +3,19 @@ projectData = {};
 
 // requisitos de dependencias de la app
 
+require('dotenv').config();
 const express = require('express');
 const mysql = require('mysql');
+
+
 
 //Conexion
 
 const connection = mysql.createConnection({
-    host: 'us-cdbr-east-05.cleardb.net',
-    user: 'b4859299f642d6',
-    password: 'd73e64fb',
-    database: 'heroku_45a5f34f29adc01'
+    host: `${process.env.HOST}`,
+    user: `${process.env.USER}`,
+    password: `${process.env.PASSWORD}`,
+    database: `${process.env.DATABASE}`
 })
 
 

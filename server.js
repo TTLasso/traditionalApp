@@ -1,64 +1,116 @@
-// Setup empty JS object to act as endpoint for all routes
+// Objeto JS vacio para usar de endpoint para todas las rutas
 projectData = {};
 
-// Require Express to run server and routes
+// requisitos de dependencias de la app
 
+require('dotenv').config();
 const express = require('express');
+const mysql = require('mysql');
 
 
-// Start up an instance of app
+
+//Conexion
+
+const connection = mysql.createConnection({
+    host: `${process.env.HOST}`,
+    user: `${process.env.USER}`,
+    password: `${process.env.PASSWORD}`,
+    database: `${process.env.DATABASE}`
+})
+
+
+// Empezar una instancia de la App
 
 const app = express();
+
 
 /* Middleware*/
 
 const bodyParser = require('body-parser');
-//Here we are configuring express to use body-parser as middle-ware.
+
+//Configurar express como body-parser
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
 
-// Cors for cross origin allowance
+// Cors 
 
 const cors = require('cors');
 app.use(cors());
 
-// Initialize the main project folder
+// carpeta principal del proyecto
 app.use(express.static('website'));
 
 
-// Setup Server
+// Establecer coneccion con el servidor
 const port = 8000;
-const server = app.listen(port, listening);
+app.listen(process.env.PORT || port, () => console.log(`Server listening on port ${port}`));
 
-function listening() {
-    console.log(`runing on localhost: ${port}`);
-};
-// TODO-ROUTES!
+
+// RUTAS
+
 //GET
-
 const data = [];
 app.get('/all', getData)
 
 function getData(req, res) {
     res.send(data)
-    console.log(`${data}`)
+    //console.log(`los datos del get son ${data}`)
 }
 
-
 //POST
-
 app.post('/addTemp', addTemp)
 
 function addTemp(req, res) {
     newEntrie = {
-        newDate: req.body.newDate,
         feelings: req.body.feelings,
-        weather: req.body.weather
+        weather: req.body.weather,
+        zipCode: req.body.zipCode
     }
     data.push(newEntrie)
-    res.send(data)
     console.log(data)
+
+    var temp = req.body.weather;
+    var feeling = req.body.feelings;
+    var ciudad = req.body.zipCode;
+    connection.query(`INSERT INTO ingresos (ciudad, temperatura, entrada) VALUES ("${ciudad}", "${temp}", "${feeling}")`);
+
+
 }
+
+//obtener todos las entradas de la tabla  y enviarlas al lado cliente
+app.get('/getPosts', (req, res) => {
+    connection.query('SELECT * FROM ingresos ORDER BY id DESC', (error, results) => {
+        if (error) throw error;
+        if (!error) {
+            res.send(results);
+            console.log(results);
+        }
+    })
+})
+
+//Borrar ingreso de la base de datos
+app.get('/deletePosts/:id', (req, res) => {
+    const postId = req.params.id;
+    connection.query(`DELETE FROM ingresos WHERE id = ${postId}`, (error, results) => {
+        if (error) throw error;
+        if (!error) {
+            console.log('entrada eliminada')
+        }
+    })
+})
+
+
+// app.get('/detelePost', (req, res) => {
+//     con.connect(function (err) {
+     
+//         if (err) throw err;
+//         var sql = `DELETE FROM ingresos WHERE id = 'Mountain 21'`;
+//         con.query(sql, function (err, result) {
+//           if (err) throw err;
+//           console.log("Number of records deleted: " + result.affectedRows);
+//         });
+//     });
+// })
 
 
